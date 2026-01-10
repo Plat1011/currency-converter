@@ -35,6 +35,14 @@ init().catch((e) => {
 });
 
 convertButton.addEventListener("click", async () => {
+
+  const amount = Number(amountInput.value);
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    resultBlock.textContent = "Error: amount must be greater than 0";
+    return;
+  }
+
   resultBlock.textContent = "Converting...";
 
   try {
