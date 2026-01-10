@@ -6,6 +6,25 @@ const toSelect = document.getElementById("toCurrency");
 const convertButton = document.getElementById("convertBtn");
 const resultBlock = document.getElementById("result");
 
+function updateConvertButtonState() {
+  const amount = Number(amountInput.value);
+  const ok = Number.isFinite(amount) && amount > 0;
+
+  convertButton.disabled = !ok;
+
+  if (!ok) {
+    resultBlock.textContent = "Enter an amount > 0";
+  } else if (resultBlock.textContent === "Enter an amount > 0") {
+    resultBlock.textContent = "Ready";
+  }
+}
+
+amountInput.addEventListener("input", updateConvertButtonState);
+amountInput.addEventListener("change", updateConvertButtonState);
+
+updateConvertButtonState();
+
+
 function fillSelect(select, list, selectedCode) {
   select.innerHTML = "";
   for (const { code, name } of list) {
