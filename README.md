@@ -51,6 +51,7 @@ Backend берёт список валют и курсы из внешнего �
 }
 ```
 
+```mermaid
 gitGraph
   commit id: "init"
   branch develop
@@ -65,3 +66,4 @@ gitGraph
   checkout main
   merge develop
   commit id: "release"
+```
