@@ -1,32 +1,50 @@
 # Currency Converter
 
-Небольшой backend-сервис для конвертации валют на основе актуальных курсов.
-Проект реализован в учебных целях с использованием чистой архитектуры и Git Flow.
+Full-stack учебный проект: конвертер валют с backend на FastAPI и frontend на Vite.
+Backend берёт список валют и курсы из внешнего сервиса (Frankfurter API), фронт позволяет выбрать валюты, ввести сумму и получить результат конвертации.
 
-## Описание
+## Features
+- Получение доступных валют: `GET /currencies`
+- Конвертация: `POST /convert`
+- Отображение результата на UI
+- Базовая клиентская валидация суммы (кнопка Convert отключается при `amount <= 0`)
+- CI: backend (ruff + pytest), frontend (npm ci + build, тесты если есть)
 
-Сервис предоставляет HTTP API для:
-- получения списка доступных валют
-- конвертации суммы из одной валюты в другую
+## Tech Stack
+**Backend:** FastAPI, httpx, Pydantic  
+**Frontend:** Vite, Vanilla JS, HTML/CSS  
+**CI:** GitHub Actions
 
-Курсы валют получаются из внешнего сервиса Frankfurter API.
+---
 
-## Архитектура
+## API
 
-Проект построен с разделением по слоям:
+### `GET /currencies`
+Возвращает словарь код -> название валюты.
 
-- **domain** — доменные модели и чистая бизнес-логика
-- **application** — use case’ы, связывающие домен и инфраструктуру
-- **infrastructure** — работа с внешними сервисами (HTTP API курсов валют)
-- **presentation** — HTTP API на FastAPI
+Пример ответа:
+```json
+{
+  "currencies": {
+    "USD": "United States Dollar",
+    "EUR": "Euro"
+  }
+}```
+### `POST /convert`
+Пример запроса:
+```json
+{
+  "amount": 1,
+  "from_currency": "USD",
+  "to_currency": "EUR"
+}```
+Пример ответа:
+```json
+{
+  "amount": 1,
+  "from_currency": "USD",
+  "to_currency": "EUR",
+  "rate": 0.85896,
+  "result": 0.85896
+}```
 
-Такое разделение позволяет изолировать бизнес-логику от деталей реализации.
-
-## Технологии
-
-- Python 3.11
-- FastAPI
-- httpx
-- pytest
-- GitHub Actions (CI)
-- Git Flow
