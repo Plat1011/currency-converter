@@ -51,19 +51,3 @@ Backend берёт список валют и курсы из внешнего �
 }
 ```
 
-```mermaid
-gitGraph
-  commit id: "init"
-  branch develop
-  checkout develop
-  commit id: "base"
-  branch feature/api-client
-  checkout feature/api-client
-  commit id: "api client"
-  checkout develop
-  merge feature/api-client
-  commit id: "integrate"
-  checkout main
-  merge develop
-  commit id: "release"
-```
