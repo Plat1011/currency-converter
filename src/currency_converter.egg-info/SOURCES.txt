@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+src/currency_converter/main.py
+src/currency_converter.egg-info/PKG-INFO
+src/currency_converter.egg-info/SOURCES.txt
+src/currency_converter.egg-info/dependency_links.txt
+src/currency_converter.egg-info/requires.txt
+src/currency_converter.egg-info/top_level.txt
+src/currency_converter/infrastructure/exceptions.py
+src/currency_converter/infrastructure/frankfurter_client.py
+src/currency_converter/infrastructure/test_frankfurter_client.py
