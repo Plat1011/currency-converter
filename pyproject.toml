@@ -14,9 +14,7 @@ dev = [
     "pytest",
     "respx",
     "ruff",
-    "httpx",
     "pytest-asyncio",
-    "fastapi"
 ]
 
 [tool.pytest.ini_options]

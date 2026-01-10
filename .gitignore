@@ -5,3 +5,5 @@ __pycache__/
 .pytest_cache/
 /src/currency_converter.egg-info/
 .idea/
+frontend/node_modules/
+frontend/dist/
