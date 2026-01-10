@@ -1,4 +1,4 @@
-from models import Currency, Money
+from .models import Currency, Money
 
 
 def convert(money: Money, to_currency: Currency, rate: float) -> Money:
