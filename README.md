@@ -29,17 +29,15 @@ Backend берёт список валют и курсы из внешнего �
     "USD": "United States Dollar",
     "EUR": "Euro"
   }
-}```
+}
 ### `POST /convert`
 Пример запроса:
-```json
 {
   "amount": 1,
   "from_currency": "USD",
   "to_currency": "EUR"
-}```
+}
 Пример ответа:
-```json
 {
   "amount": 1,
   "from_currency": "USD",
