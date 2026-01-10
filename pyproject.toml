@@ -1,0 +1,24 @@
+[project]
+name = "currency-converter"
+version = "0.1.0"
+description = "Currency converter service using FastAPI"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "httpx"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "respx",
+    "ruff",
+    "httpx"
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 88
