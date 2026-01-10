@@ -1,5 +1,5 @@
-from models import Currency, Money
-from services import convert
+from currency_converter.domain.models import Currency, Money
+from currency_converter.domain.services import convert
 
 
 def test_convert_simple():

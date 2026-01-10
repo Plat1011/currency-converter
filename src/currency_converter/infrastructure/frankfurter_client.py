@@ -22,16 +22,17 @@ class FrankfurterClient:
             raise ExternalServiceUnavailable("Invalid response format")
         return {str(k): str(v) for k, v in data.items()}
 
-    async def get_rate(self, from_currency: str, to_currency: str, date: Optional[str] = None) -> float:
-        path = f"/{date}" if date else "/latest"
-        url = f"{self.base_url}{path}"
+    async def get_rate(self, from_currency: str, to_currency: str) -> float:
+        url = f"{self.base_url}/latest"
         params = {"from": from_currency, "to": to_currency}
 
         data = await self._get_json(url, params=params)
 
         rates = data.get("rates") if isinstance(data, dict) else None
         if not isinstance(rates, dict) or to_currency not in rates:
-            raise ExternalServiceBadRequest(f"Rate not found for {from_currency}->{to_currency}")
+            raise ExternalServiceBadRequest(
+                f"Rate not found for {from_currency}->{to_currency}"
+            )
 
         rate = rates[to_currency]
         if not isinstance(rate, (int, float)):
@@ -49,10 +50,14 @@ class FrankfurterClient:
                     resp = await client.get(url, params=params)
 
                 if 400 <= resp.status_code < 500:
-                    raise ExternalServiceBadRequest(f"External API rejected request: {resp.status_code}")
+                    raise ExternalServiceBadRequest(
+                        f"External API rejected request: {resp.status_code}"
+                    )
 
                 if resp.status_code >= 500:
-                    raise ExternalServiceUnavailable(f"External API error: {resp.status_code}")
+                    raise ExternalServiceUnavailable(
+                        f"External API error: {resp.status_code}"
+                    )
 
                 return resp.json()
 
