@@ -54,3 +54,6 @@ Backend берёт список валют и курсы из внешнего �
 
 ### Ход разработки в Jira:
 ![Jira1](docs/images/6.png)
+![Jira2](docs/images/7.png)
+![Jira3](docs/images/8.png)
+![Jira4](docs/images/5.png)
