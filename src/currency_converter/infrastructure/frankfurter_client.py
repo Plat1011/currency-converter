@@ -6,6 +6,12 @@ from typing import Dict, Optional
 
 import httpx
 
+from currency_converter.application.exceptions import (
+    RatesProviderBadRequest,
+    RatesProviderUnavailable,
+)
+
+
 from currency_converter.config import (
     FRANKFURTER_BASE_URL,
     FRANKFURTER_MAX_RETRIES,
@@ -23,7 +29,12 @@ class FrankfurterClient:
 
     async def get_currencies(self) -> Dict[str, str]:
         url = f"{self.base_url}/currencies"
-        data = await self._get_json(url)
+        try:
+            data = await self._get_json(url)
+        except ExternalServiceBadRequest as e:
+            raise RatesProviderBadRequest(str(e)) from e
+        except ExternalServiceUnavailable as e:
+            raise RatesProviderUnavailable(str(e)) from e
         if not isinstance(data, dict):
             raise ExternalServiceUnavailable("Invalid response format")
         return {str(k): str(v) for k, v in data.items()}
@@ -32,8 +43,12 @@ class FrankfurterClient:
         url = f"{self.base_url}/latest"
         params = {"from": from_currency, "to": to_currency}
 
-        data = await self._get_json(url, params=params)
-
+        try:
+            data = await self._get_json(url, params=params)
+        except ExternalServiceBadRequest as e:
+            raise RatesProviderBadRequest(str(e)) from e
+        except ExternalServiceUnavailable as e:
+            raise RatesProviderUnavailable(str(e)) from e
         rates = data.get("rates") if isinstance(data, dict) else None
         if not isinstance(rates, dict) or to_currency not in rates:
             raise ExternalServiceBadRequest(
