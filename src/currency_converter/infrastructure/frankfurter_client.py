@@ -6,14 +6,20 @@ from typing import Dict, Optional
 
 import httpx
 
+from currency_converter.config import (
+    FRANKFURTER_BASE_URL,
+    FRANKFURTER_MAX_RETRIES,
+    FRANKFURTER_TIMEOUT_SECONDS,
+)
+
 from .exceptions import ExternalServiceBadRequest, ExternalServiceUnavailable
 
 
 @dataclass(frozen=True)
 class FrankfurterClient:
-    base_url: str = "https://api.frankfurter.app"
-    timeout_seconds: float = 5.0
-    max_retries: int = 2
+    base_url: str = FRANKFURTER_BASE_URL
+    timeout_seconds: float = FRANKFURTER_TIMEOUT_SECONDS
+    max_retries: int = FRANKFURTER_MAX_RETRIES
 
     async def get_currencies(self) -> Dict[str, str]:
         url = f"{self.base_url}/currencies"
