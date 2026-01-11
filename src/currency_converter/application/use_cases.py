@@ -6,9 +6,9 @@ from .ports import RatesProvider
 from currency_converter.domain.models import Currency, Money
 from currency_converter.domain.services import convert
 
-from currency_converter.infrastructure.exceptions import (
-    ExternalServiceBadRequest,
-    ExternalServiceUnavailable,
+from currency_converter.application.exceptions import (
+    RatesProviderBadRequest,
+    RatesProviderUnavailable,
 )
 
 
@@ -53,9 +53,9 @@ class ConvertCurrencyUseCase:
 
         try:
             rate = await self._rates.get_rate(from_code, to_code)
-        except ExternalServiceBadRequest as e:
+        except RatesProviderBadRequest as e:
             raise ConversionBadRequest(str(e)) from e
-        except ExternalServiceUnavailable as e:
+        except RatesProviderUnavailable as e:
             raise ConversionUnavailable(str(e)) from e
 
         result = convert(money=money, to_currency=to_currency, rate=rate)
