@@ -49,3 +49,4 @@ FRANKFURTER_MAX_RETRIES: int = _get_env_int(
     "FRANKFURTER_MAX_RETRIES",
     2,
 )
+RATES_SOURCE: str = os.getenv("RATES_SOURCE", "static").strip().lower()
