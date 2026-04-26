@@ -41,3 +41,28 @@ export async function convert(payload) {
 
   return await response.json();
 }
+
+export async function getReceiptPdf(payload) {
+  const response = await fetch(`${API_BASE_URL}/receipt`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    let message = `HTTP error ${response.status}`;
+
+    try {
+      const body = await response.json();
+      if (body?.detail) {
+        message = body.detail;
+      }
+    } catch (_) {}
+
+    throw new Error(message);
+  }
+
+  return await response.blob();
+}

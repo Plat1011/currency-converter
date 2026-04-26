@@ -61,6 +61,21 @@ def test_convert():
     assert body["result"] == 5.0
 
 
+def test_receipt_pdf():
+    client = make_client(Provider())
+
+    r = client.post(
+        "/receipt",
+        json={"amount": 10, "from_currency": "USD", "to_currency": "EUR"},
+    )
+    assert r.status_code == 200
+    assert r.headers["content-type"] == "application/pdf"
+    assert r.headers["content-disposition"] == (
+        "inline; filename=currency-converter-receipt.pdf"
+    )
+    assert r.content.startswith(b"%PDF")
+
+
 def test_convert_error():
     client = make_client(Provider())
 

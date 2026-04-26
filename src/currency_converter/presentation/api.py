@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import Response
 
 from currency_converter.application.ports import RatesProvider
 from currency_converter.application.use_cases import (
@@ -13,6 +14,7 @@ from currency_converter.presentation.schemas import (
     ConvertResponse,
     CurrenciesResponse,
 )
+from currency_converter.presentation.receipt_pdf import build_receipt_pdf
 
 router = APIRouter()
 
@@ -53,4 +55,43 @@ async def convert_currency(
         "rate": res.rate,
         "result": res.result.amount,
     }
+
+
+@router.post("/receipt")
+async def generate_receipt(
+    payload: ConvertRequest,
+    rates: RatesProvider = Depends(get_rates_provider),
+):
+    uc = ConvertCurrencyUseCase(rates=rates)
+
+    try:
+        res = await uc.execute(
+            ConvertCurrencyCommand(
+                amount=payload.amount,
+                from_code=payload.from_currency,
+                to_code=payload.to_currency,
+            )
+        )
+    except ConversionBadRequest as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except ConversionUnavailable as e:
+        raise HTTPException(status_code=503, detail=str(e)) from e
+
+    pdf_bytes = build_receipt_pdf(
+        amount=res.source.amount,
+        from_currency=res.source.currency.code,
+        to_currency=res.result.currency.code,
+        rate=res.rate,
+        result=res.result.amount,
+    )
+
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": (
+                "inline; filename=currency-converter-receipt.pdf"
+            )
+        },
+    )
 
